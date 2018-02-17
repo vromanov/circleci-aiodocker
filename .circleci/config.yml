@@ -6,6 +6,12 @@ jobs:
       - image: docker:17.09.0-ce
 
     steps:
+      - checkout
+
+      - persist_to_workspace:
+          root: .
+          paths: .
+
       - setup_remote_docker:
           version: 17.09.0-ce
           docker_layer_caching: true
