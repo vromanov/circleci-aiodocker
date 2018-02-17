@@ -24,15 +24,6 @@ jobs:
           command: |
             export CIRCLE_SHORT_SHA1=$(echo $CIRCLE_SHA1 | cut -c -7)
             env
-#            DOCKER_ENV_FILE=$(mktemp)
-#            echo CI > $DOCKER_ENV_FILE
-#            echo AWS_ACCESS_KEY_ID=key >> $DOCKER_ENV_FILE
-#            echo AWS_SECRET_ACCESS_KEY=secret >> $DOCKER_ENV_FILE
-#            env | grep CIRCLE >> $DOCKER_ENV_FILE
-#            env | grep CODECOV >> $DOCKER_ENV_FILE
-#            env | grep DOCKER_ >> $DOCKER_ENV_FILE
-#            docker run --rm --env-file $DOCKER_ENV_FILE \
-#                circleci-aiodocker:$CIRCLE_SHORT_SHA1 pytest -s -vv tests
             docker run --rm \
                 circleci-aiodocker:$CIRCLE_SHORT_SHA1 pytest -s -vv tests
 
