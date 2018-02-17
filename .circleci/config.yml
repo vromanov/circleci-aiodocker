@@ -23,7 +23,7 @@ jobs:
           name: Run container
           command: |
             export CIRCLE_SHORT_SHA1=$(echo $CIRCLE_SHA1 | cut -c -7)
-            env
-            docker run --rm \
+            DOCKER_ENV_FILE=$(mktemp)
+            docker run --rm --env-file $DOCKER_ENV_FILE \
                 circleci-aiodocker:$CIRCLE_SHORT_SHA1 pytest -s -vv tests
 
