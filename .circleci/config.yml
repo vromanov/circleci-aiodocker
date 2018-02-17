@@ -1,29 +1,15 @@
-defaults: &defaults
-  working_directory: /app
-  docker:
-    - image: docker:17.09.0-ce
-
 version: 2
 jobs:
-  checkout:
-    <<: *defaults
+  build:
+    working_directory: /app
+    docker:
+      - image: docker:17.11.0-ce
+
     steps:
       - checkout
-      - persist_to_workspace:
-          root: .
-          paths: .
 
-  server:
-    <<: *defaults
-    steps:
       - setup_remote_docker:
-          version: 17.09.0-ce
           docker_layer_caching: true
-
-      - attach_workspace:
-          at: /app
-
-      - run: docker login -u $DOCKER_USER -p $DOCKER_PASS
 
       - run:
           name: Build container
@@ -45,16 +31,4 @@ jobs:
             env | grep DOCKER_ >> $DOCKER_ENV_FILE
             docker run --rm --env-file $DOCKER_ENV_FILE \
                 circleci-aiodocker:$CIRCLE_SHORT_SHA1 pytest -s -vv tests
-
-workflows:
-  version: 2
-  main-workflow:
-    jobs:
-      - checkout:
-          context: org-global
-
-      - backend:
-          context: org-global
-          requires:
-            - checkout
 
