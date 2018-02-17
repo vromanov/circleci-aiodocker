@@ -16,7 +16,7 @@ jobs:
           name: Build container
           command: |
             export CIRCLE_SHORT_SHA1=$(echo $CIRCLE_SHA1 | cut -c -7)
-            cd /app
+            ls -la
             docker build -t circleci-aiodocker:$CIRCLE_SHORT_SHA1 .
 
       - run:
