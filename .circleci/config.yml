@@ -31,5 +31,5 @@ jobs:
             env | grep DOCKER >> $DOCKER_ENV_FILE
             DNAME=$(docker create --env-file $DOCKER_ENV_FILE \
                 circleci-aiodocker:$CIRCLE_SHORT_SHA1 pytest -s -vv tests)
-            docker cp $DNAME/ $DNAME:$DOCKER_CERT_PATH/
+            docker cp $DOCKER_CERT_PATH/ $DNAME:$DOCKER_CERT_PATH/
             docker start -a $DNAME
