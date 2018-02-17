@@ -29,7 +29,8 @@ jobs:
             echo AWS_ACCESS_KEY_ID=key >> $DOCKER_ENV_FILE
             echo AWS_SECRET_ACCESS_KEY=secret >> $DOCKER_ENV_FILE
             env | grep DOCKER >> $DOCKER_ENV_FILE
-            docker run --rm --env-file $DOCKER_ENV_FILE \
-                -v "$$DOCKER_CERT_PATH":"$$DOCKER_CERT_PATH/" \
-                circleci-aiodocker:$CIRCLE_SHORT_SHA1 pytest -s -vv tests
+            $(eval DC_NAME := $(shell docker create --env-file $DOCKER_ENV_FILE \
+                circleci-aiodocker:$CIRCLE_SHORT_SHA1 pytest -s -vv tests))
+            docker cp "$$DOCKER_CERT_PATH/" $(DC_NAME):"$$DOCKER_CERT_PATH/"
+            docker start -a $(DC_NAME);
 
