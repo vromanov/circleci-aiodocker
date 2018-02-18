@@ -20,6 +20,12 @@ jobs:
             docker build -t circleci-aiodocker:$CIRCLE_SHORT_SHA1 .
 
       - run:
+          name: Pull dependencies
+          command: |
+            docker pull instructure/dynamo-local-admin:latest
+            docker images
+
+      - run:
           name: Run container
           command: |
             export CIRCLE_SHORT_SHA1=$(echo $CIRCLE_SHA1 | cut -c -7)
